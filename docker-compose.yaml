@@ -1,0 +1,164 @@
+services:
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222" # Puerto de comunicación
+
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - mongodb_data:/data/db
+
+  gateway:
+    build: ./../client_gateway
+    ports:
+      - "${GATEWAY_PORT}:3000"
+    environment:
+      - NATS_URL=${NATS_URL}
+      - PORT=${GATEWAY_PORT}
+    depends_on:
+      - nats
+    command: npm run start:dev
+    volumes:
+      - ./../client_gateway/src:/usr/src/app/src
+  
+  sports-catalog-service:
+    build: ./../sports-catalog-service
+    ports:
+      - "${SPORTS_CATALOG_SERVICE_PORT}:3001"
+    environment:
+      - NATS_SERVERS=${NATS_URL}
+      - PORT=${SPORTS_CATALOG_SERVICE_PORT}
+      - DATABASE_URL=${DATABASE_NAME_SPORTS_CATALOG}
+
+    depends_on:
+      - nats
+    command: npm run start:dev
+    volumes:
+      - ./../sports-catalog-service/src:/usr/src/app/src
+      - ./../sports-catalog-service/prisma:/usr/src/app/prisma
+  
+  competition-engine-service:
+    build: ./../competition-engine-service
+    ports:
+      - "${COMPETITION_ENGINE_SERVICE_PORT}:3002"
+    environment:
+      - NATS_SERVERS=${NATS_URL}
+      - PORT=${COMPETITION_ENGINE_SERVICE_PORT}
+      - DATABASE_URL=${DATABASE_URL_COMPETITION_ENGINE}
+    depends_on:
+      - nats
+    command: npm run start:dev
+    volumes:
+      - ./../competition-engine-service/src:/usr/src/app/src
+      - ./../competition-engine-service/prisma:/usr/src/app/prisma
+
+  national-teams-ms:
+    build: ./../national-teams-ms
+    ports:
+      - "${NATIONAL_TEAMS_MS_PORT}:3003"
+    environment:
+      - NATS_SERVERS=${NATS_URL}
+      - DATABASE_URL=${DATABASE_URL_NATIONAL_TEAMS}
+      - PORT=${NATIONAL_TEAMS_MS_PORT}
+    depends_on:
+      - nats
+    command: npm run start:dev
+    volumes:
+      - ./../national-teams-ms/src:/usr/src/app/src
+      - ./../national-teams-ms/prisma:/usr/src/app/prisma
+
+  auth-ms:
+    build: ./../auth-ms
+    ports:
+      - "${AUTH_MS_PORT}:3004"
+    environment:
+      - NATS_SERVERS=${NATS_URL}
+      - DATABASE_URL=${DATABASE_URL_AUTH}
+      - SALT=${AUTH_SALT}
+      - JWT_SECRET=${AUTH_JWT_SECRET}
+      - PORT=${AUTH_MS_PORT}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USER=${MAIL_USER}
+      - MAIL_PASS=${MAIL_PASS}
+      - MAIL_FROM=${MAIL_FROM}
+    depends_on:
+      - nats
+    command: npm run start:dev
+    volumes:
+      - ./../auth-ms/src:/usr/src/app/src
+
+  retail-ms:
+    build: ./../retail-ms
+    ports:
+      - "${RETAIL_MS_PORT}:3005"
+    environment:
+      - NATS_SERVERS=${NATS_URL}
+      - DATABASE_URL=${DATABASE_URL_RETAIL}
+      - PORT=${RETAIL_MS_PORT}
+    depends_on:
+      - nats
+      - mongodb
+    command: npm run start:dev
+    volumes:
+      - ./../retail-ms/src:/usr/src/app/src
+      - ./../retail-ms/prisma:/usr/src/app/prisma
+  
+  customer-auth-ms:
+    build: ./../customer-auth-ms
+    ports:
+      - "${CUSTOMER_AUTH_MS_PORT}:3006"
+    environment:
+      - NATS_SERVERS=${NATS_URL}
+      - DATABASE_URL=${DATABASE_URL_CUSTOMER_AUTH}
+      - PORT=${CUSTOMER_AUTH_MS_PORT}
+      - SALT=${AUTH_SALT}
+      - JWT_SECRET=${AUTH_JWT_SECRET}
+    depends_on:
+      - nats
+    command: npm run start:dev
+    volumes:
+      - ./../customer-auth-ms/src:/usr/src/app/src
+      - ./../customer-auth-ms/prisma:/usr/src/app/prisma
+
+  tickets-service:
+    build: ./../tickets-service
+    ports:
+      - "${TICKETS_SERVICE_PORT}:3007"
+    environment:
+      - NATS_SERVERS=${NATS_URL}
+      - PORT=${TICKETS_SERVICE_PORT}
+      - DATABASE_URL=${DATABASE_URL_TICKETS}
+    depends_on:
+      - nats
+      - mongodb
+    command: npm run start:dev
+    volumes:
+      - ./../tickets-service/src:/usr/src/app/src
+      - ./../tickets-service/prisma:/usr/src/app/prisma
+
+  content-ms:
+    build: ./../content-ms
+    ports:
+      - "${CONTENT_MS_PORT}:3008"
+    environment:
+      - SERVER_PORT=3008
+      - NATS_URL=${NATS_URL}
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=admin
+      - DB_NAME=content_db
+    depends_on:
+      - nats
+    volumes:
+      - ./../content-ms:/usr/src/app
+
+volumes:
+  mongodb_data:
