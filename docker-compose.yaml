@@ -15,7 +15,7 @@ services:
       - mongodb_data:/data/db
 
   gateway:
-    build: ./../client_gateway
+    build: ./../LBClientGateway
     ports:
       - "${GATEWAY_PORT}:3000"
     environment:
@@ -25,10 +25,10 @@ services:
       - nats
     command: npm run start:dev
     volumes:
-      - ./../client_gateway/src:/usr/src/app/src
+      - ./../LBClientGateway/src:/usr/src/app/src
   
   sports-catalog-service:
-    build: ./../sports-catalog-service
+    build: ./../LBSportsCatalog-MS
     ports:
       - "${SPORTS_CATALOG_SERVICE_PORT}:3001"
     environment:
@@ -40,11 +40,11 @@ services:
       - nats
     command: npm run start:dev
     volumes:
-      - ./../sports-catalog-service/src:/usr/src/app/src
-      - ./../sports-catalog-service/prisma:/usr/src/app/prisma
+      - ./../LBSportsCatalog-MS/src:/usr/src/app/src
+      - ./../LBSportsCatalog-MS/prisma:/usr/src/app/prisma
   
   competition-engine-service:
-    build: ./../competition-engine-service
+    build: ./../LBCompetitionEngine-MS
     ports:
       - "${COMPETITION_ENGINE_SERVICE_PORT}:3002"
     environment:
@@ -55,11 +55,11 @@ services:
       - nats
     command: npm run start:dev
     volumes:
-      - ./../competition-engine-service/src:/usr/src/app/src
-      - ./../competition-engine-service/prisma:/usr/src/app/prisma
+      - ./../LBCompetitionEngine-MS/src:/usr/src/app/src
+      - ./../LBCompetitionEngine-MS/prisma:/usr/src/app/prisma
 
   national-teams-ms:
-    build: ./../national-teams-ms
+    build: ./../LBNationalTeam-MS
     ports:
       - "${NATIONAL_TEAMS_MS_PORT}:3003"
     environment:
@@ -70,11 +70,11 @@ services:
       - nats
     command: npm run start:dev
     volumes:
-      - ./../national-teams-ms/src:/usr/src/app/src
-      - ./../national-teams-ms/prisma:/usr/src/app/prisma
+      - ./../LBNationalTeam-MS/src:/usr/src/app/src
+      - ./../LBNationalTeam-MS/prisma:/usr/src/app/prisma
 
   auth-ms:
-    build: ./../auth-ms
+    build: ./../LBAuth-MS
     ports:
       - "${AUTH_MS_PORT}:3004"
     environment:
@@ -92,10 +92,10 @@ services:
       - nats
     command: npm run start:dev
     volumes:
-      - ./../auth-ms/src:/usr/src/app/src
+      - ./../LBAuth-MS/src:/usr/src/app/src
 
   retail-ms:
-    build: ./../retail-ms
+    build: ./../LBRetail-MS
     ports:
       - "${RETAIL_MS_PORT}:3005"
     environment:
@@ -107,11 +107,11 @@ services:
       - mongodb
     command: npm run start:dev
     volumes:
-      - ./../retail-ms/src:/usr/src/app/src
-      - ./../retail-ms/prisma:/usr/src/app/prisma
+      - ./../LBRetail-MS/src:/usr/src/app/src
+      - ./../LBRetail-MS/prisma:/usr/src/app/prisma
   
   customer-auth-ms:
-    build: ./../customer-auth-ms
+    build: ./../LBCustomerAuth-MS
     ports:
       - "${CUSTOMER_AUTH_MS_PORT}:3006"
     environment:
@@ -124,11 +124,11 @@ services:
       - nats
     command: npm run start:dev
     volumes:
-      - ./../customer-auth-ms/src:/usr/src/app/src
-      - ./../customer-auth-ms/prisma:/usr/src/app/prisma
+      - ./../LBCustomerAuth-MS/src:/usr/src/app/src
+      - ./../LBCustomerAuth-MS/prisma:/usr/src/app/prisma
 
   tickets-service:
-    build: ./../tickets-service
+    build: ./../LBTickets-MS
     ports:
       - "${TICKETS_SERVICE_PORT}:3007"
     environment:
@@ -140,11 +140,11 @@ services:
       - mongodb
     command: npm run start:dev
     volumes:
-      - ./../tickets-service/src:/usr/src/app/src
-      - ./../tickets-service/prisma:/usr/src/app/prisma
+      - ./../LBTickets-MS/src:/usr/src/app/src
+      - ./../LBTickets-MS/prisma:/usr/src/app/prisma
 
   content-ms:
-    build: ./../content-ms
+    build: ./../LBContent-MS
     ports:
       - "${CONTENT_MS_PORT}:3008"
     environment:
@@ -158,7 +158,7 @@ services:
     depends_on:
       - nats
     volumes:
-      - ./../content-ms:/usr/src/app
+      - ./../LBContent-MS:/usr/src/app
 
 volumes:
   mongodb_data:
