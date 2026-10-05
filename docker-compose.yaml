@@ -150,7 +150,7 @@ services:
     environment:
       - SERVER_PORT=3008
       - NATS_URL=${NATS_URL}
-      - DB_HOST=host.docker.internal
+      - DB_HOST=host.docker.internal:DB_HOST
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASSWORD=admin
