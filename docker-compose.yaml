@@ -25,7 +25,7 @@ services:
     depends_on:
       - nats
     volumes:
-      - ./../LBClientGateway:/usr/src/app/src
+      - ./../LBClientGateway:/usr/src/app
       - /usr/src/app/node_modules
   
   sports-catalog-service:
@@ -93,7 +93,7 @@ services:
     depends_on:
       - nats
     volumes:
-      - ./../LBAuth-MS:/usr/src/app/src
+      - ./../LBAuth-MS:/usr/src/app
       - /usr/src/app/node_modules
 
   retail-ms:
