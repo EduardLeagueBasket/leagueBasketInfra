@@ -91,7 +91,6 @@ services:
       - MAIL_FROM=${MAIL_FROM}
     depends_on:
       - nats
-    command: npm run start:dev
     volumes:
       - ./../LBAuth-MS/src:/usr/src/app/src
 
