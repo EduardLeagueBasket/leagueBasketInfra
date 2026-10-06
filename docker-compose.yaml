@@ -1,8 +1,8 @@
 services:
-#  nats:
-#    image: nats:latest
-#    ports:
-#      - "4222:4222" # Puerto de comunicación
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222" # Puerto de comunicación
 
   mongodb:
     image: mongo:7
@@ -22,8 +22,8 @@ services:
     environment:
       - NATS_URL=${NATS_URL}
       - PORT=${GATEWAY_PORT}
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
     volumes:
       - ./../LBClientGateway:/usr/src/app
       - /usr/src/app/node_modules
@@ -37,8 +37,8 @@ services:
       - PORT=${SPORTS_CATALOG_SERVICE_PORT}
       - DATABASE_URL=${DATABASE_NAME_SPORTS_CATALOG}
 
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
     command: npm run start:dev
     volumes:
       - ./../LBSportsCatalog-MS/src:/usr/src/app/src
@@ -52,8 +52,8 @@ services:
       - NATS_SERVERS=${NATS_URL}
       - PORT=${COMPETITION_ENGINE_SERVICE_PORT}
       - DATABASE_URL=${DATABASE_URL_COMPETITION_ENGINE}
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
     command: npm run start:dev
     volumes:
       - ./../LBCompetitionEngine-MS/src:/usr/src/app/src
@@ -67,8 +67,8 @@ services:
       - NATS_SERVERS=${NATS_URL}
       - DATABASE_URL=${DATABASE_URL_NATIONAL_TEAMS}
       - PORT=${NATIONAL_TEAMS_MS_PORT}
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
     command: npm run start:dev
     volumes:
       - ./../LBNationalTeam-MS/src:/usr/src/app/src
@@ -90,8 +90,8 @@ services:
       - MAIL_USER=${MAIL_USER}
       - MAIL_PASS=${MAIL_PASS}
       - MAIL_FROM=${MAIL_FROM}
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
     volumes:
       - ./../LBAuth-MS:/usr/src/app
       - /usr/src/app/node_modules
@@ -104,8 +104,8 @@ services:
       - NATS_SERVERS=${NATS_URL}
       - DATABASE_URL=${DATABASE_URL_RETAIL}
       - PORT=${RETAIL_MS_PORT}
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
       - mongodb
     command: npm run start:dev
     volumes:
@@ -122,8 +122,8 @@ services:
       - PORT=${CUSTOMER_AUTH_MS_PORT}
       - SALT=${AUTH_SALT}
       - JWT_SECRET=${AUTH_JWT_SECRET}
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
     command: npm run start:dev
     volumes:
       - ./../LBCustomerAuth-MS/src:/usr/src/app/src
@@ -137,8 +137,8 @@ services:
       - NATS_SERVERS=${NATS_URL}
       - PORT=${TICKETS_SERVICE_PORT}
       - DATABASE_URL=${DATABASE_URL_TICKETS}
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
       - mongodb
     command: npm run start:dev
     volumes:
@@ -157,8 +157,8 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=admin
       - DB_NAME=content_db
-#    depends_on:
-#      - nats
+    depends_on:
+      - nats
     volumes:
       - ./../LBContent-MS:/usr/src/app
 
