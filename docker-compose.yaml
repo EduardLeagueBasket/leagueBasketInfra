@@ -75,7 +75,7 @@ services:
       - ./../LBNationalTeam-MS/prisma:/usr/src/app/prisma
 
   auth-ms:
-    command: npx @nestjs/cli start --watch
+    command: sh -c "npx prisma generate && rm -rf dist && npx @nestjs/cli start --watch"
     build: ./../LBAuth-MS
     ports:
       - "${AUTH_MS_PORT}:3004"
