@@ -22,7 +22,7 @@ services:
     environment:
       - NATS_URL=${NATS_URL}
       - PORT=${GATEWAY_PORT}
-    depends_on:
+#    depends_on:
 #      - nats
     volumes:
       - ./../LBClientGateway:/usr/src/app
@@ -37,7 +37,7 @@ services:
       - PORT=${SPORTS_CATALOG_SERVICE_PORT}
       - DATABASE_URL=${DATABASE_NAME_SPORTS_CATALOG}
 
-    depends_on:
+#    depends_on:
 #      - nats
     command: npm run start:dev
     volumes:
@@ -52,7 +52,7 @@ services:
       - NATS_SERVERS=${NATS_URL}
       - PORT=${COMPETITION_ENGINE_SERVICE_PORT}
       - DATABASE_URL=${DATABASE_URL_COMPETITION_ENGINE}
-    depends_on:
+#    depends_on:
 #      - nats
     command: npm run start:dev
     volumes:
@@ -67,7 +67,7 @@ services:
       - NATS_SERVERS=${NATS_URL}
       - DATABASE_URL=${DATABASE_URL_NATIONAL_TEAMS}
       - PORT=${NATIONAL_TEAMS_MS_PORT}
-    depends_on:
+#    depends_on:
 #      - nats
     command: npm run start:dev
     volumes:
@@ -90,7 +90,7 @@ services:
       - MAIL_USER=${MAIL_USER}
       - MAIL_PASS=${MAIL_PASS}
       - MAIL_FROM=${MAIL_FROM}
-    depends_on:
+#    depends_on:
 #      - nats
     volumes:
       - ./../LBAuth-MS:/usr/src/app
@@ -104,7 +104,7 @@ services:
       - NATS_SERVERS=${NATS_URL}
       - DATABASE_URL=${DATABASE_URL_RETAIL}
       - PORT=${RETAIL_MS_PORT}
-    depends_on:
+#    depends_on:
 #      - nats
       - mongodb
     command: npm run start:dev
@@ -122,7 +122,7 @@ services:
       - PORT=${CUSTOMER_AUTH_MS_PORT}
       - SALT=${AUTH_SALT}
       - JWT_SECRET=${AUTH_JWT_SECRET}
-    depends_on:
+#    depends_on:
 #      - nats
     command: npm run start:dev
     volumes:
@@ -137,7 +137,7 @@ services:
       - NATS_SERVERS=${NATS_URL}
       - PORT=${TICKETS_SERVICE_PORT}
       - DATABASE_URL=${DATABASE_URL_TICKETS}
-    depends_on:
+#    depends_on:
 #      - nats
       - mongodb
     command: npm run start:dev
@@ -157,7 +157,7 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=admin
       - DB_NAME=content_db
-    depends_on:
+#    depends_on:
 #      - nats
     volumes:
       - ./../LBContent-MS:/usr/src/app
